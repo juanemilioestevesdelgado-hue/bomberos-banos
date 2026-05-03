@@ -1,4 +1,4 @@
-import { fullInventory } from './data.js?v=2';
+import { inventoryA1, inventoryB2 } from './data.js?v=3';
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 import {
@@ -37,8 +37,9 @@ const db = getFirestore(app);
 const IMGBB_API_KEY = "6f61e5ee8f8afa155a55c439b13602e5";
 
 let reviewedCount = 0;
-let currentUnit = "Bomberos-banos";
-let currentCollection = "inventory";
+let currentUnit = "";
+let currentCollection = "";
+let initialData = [];
 
 document.addEventListener('DOMContentLoaded', async () => {
     const tableBody = document.getElementById('inventory-body');
@@ -89,6 +90,13 @@ document.addEventListener('DOMContentLoaded', async () => {
         tabLogin.style.borderBottom = 'none';
     });
 
+    // UI Containers
+    const unitSelectionContainer = document.getElementById('unit-selection-container');
+    const selectA1Btn = document.getElementById('select-a1');
+    const selectB2Btn = document.getElementById('select-b2');
+    const backToLoginBtn = document.getElementById('back-to-login');
+    const appTitle = document.getElementById('app-title');
+
     // Check session
     const checkSession = () => {
         const session = localStorage.getItem('userSession');
@@ -99,8 +107,16 @@ document.addEventListener('DOMContentLoaded', async () => {
                 inventariador = userData.username;
                 currentUserRole = userData.role;
                 
-                if (authContainer) authContainer.style.setProperty('display', 'none', 'important');
-                if (appContainer) appContainer.style.setProperty('display', 'block', 'important');
+                if (authContainer) authContainer.style.display = 'none';
+                
+                // If unit is already selected, go to app, otherwise show selection
+                const selectedUnit = sessionStorage.getItem('selectedUnit');
+                if (selectedUnit) {
+                    setupUnit(selectedUnit);
+                } else {
+                    if (unitSelectionContainer) unitSelectionContainer.style.display = 'flex';
+                    if (appContainer) appContainer.style.display = 'none';
+                }
                 
                 console.log("User logged in:", inventariador, currentUserRole);
                 
@@ -113,19 +129,41 @@ document.addEventListener('DOMContentLoaded', async () => {
                     if (inboxBtn) inboxBtn.style.display = 'none';
                     if (document.getElementById('manage-users-btn')) document.getElementById('manage-users-btn').style.display = 'none';
                 }
-                startRealtimeListener();
             } catch (e) {
                 console.error("Session parse error:", e);
                 localStorage.removeItem('userSession');
             }
         } else {
             if (authContainer) authContainer.style.display = 'flex';
+            if (unitSelectionContainer) unitSelectionContainer.style.display = 'none';
             if (appContainer) appContainer.style.display = 'none';
         }
     };
 
+    function setupUnit(unit) {
+        currentUnit = unit;
+        currentCollection = `inventory_${unit.toLowerCase()}`;
+        initialData = unit === 'A1' ? inventoryA1 : inventoryB2;
+        sessionStorage.setItem('selectedUnit', unit);
+
+        if (appTitle) appTitle.textContent = `INVENTARIO ${unit}`;
+        if (unitSelectionContainer) unitSelectionContainer.style.display = 'none';
+        if (appContainer) appContainer.style.display = 'block';
+        
+        startRealtimeListener();
+    }
+
+    selectA1Btn.addEventListener('click', () => setupUnit('A1'));
+    selectB2Btn.addEventListener('click', () => setupUnit('B2'));
+    backToLoginBtn.addEventListener('click', () => {
+        localStorage.removeItem('userSession');
+        sessionStorage.removeItem('selectedUnit');
+        window.location.reload();
+    });
+
     logoutBtn.addEventListener('click', () => {
         localStorage.removeItem('userSession');
+        sessionStorage.removeItem('selectedUnit');
         window.location.reload();
     });
 
@@ -469,7 +507,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 console.log(`Database ${currentCollection} is empty. Populating...`);
                 if (typeof tableBody !== 'undefined') tableBody.innerHTML = '<tr><td colspan="15" style="text-align: center;">Inicializando base de datos por primera vez...</td></tr>';
                 const batch = writeBatch(db);
-                fullInventory.forEach((item) => {
+                initialData.forEach((item) => {
                     const docRef = doc(db, currentCollection, item.codigo);
                     batch.set(docRef, { ...item, estado: "", revisado: false, comentarios: "", fotoUrl: "" });
                 });
