@@ -107,15 +107,15 @@ document.addEventListener('DOMContentLoaded', async () => {
                 inventariador = userData.username;
                 currentUserRole = userData.role;
                 
-                if (authContainer) authContainer.style.display = 'none';
+                if (authContainer) authContainer.style.setProperty('display', 'none', 'important');
                 
                 // If unit is already selected, go to app, otherwise show selection
                 const selectedUnit = sessionStorage.getItem('selectedUnit');
                 if (selectedUnit) {
                     setupUnit(selectedUnit);
                 } else {
-                    if (unitSelectionContainer) unitSelectionContainer.style.display = 'flex';
-                    if (appContainer) appContainer.style.display = 'none';
+                    if (unitSelectionContainer) unitSelectionContainer.style.setProperty('display', 'flex', 'important');
+                    if (appContainer) appContainer.style.setProperty('display', 'none', 'important');
                 }
                 
                 console.log("User logged in:", inventariador, currentUserRole);
@@ -134,21 +134,22 @@ document.addEventListener('DOMContentLoaded', async () => {
                 localStorage.removeItem('userSession');
             }
         } else {
-            if (authContainer) authContainer.style.display = 'flex';
-            if (unitSelectionContainer) unitSelectionContainer.style.display = 'none';
-            if (appContainer) appContainer.style.display = 'none';
+            if (authContainer) authContainer.style.setProperty('display', 'flex', 'important');
+            if (unitSelectionContainer) unitSelectionContainer.style.setProperty('display', 'none', 'important');
+            if (appContainer) appContainer.style.setProperty('display', 'none', 'important');
         }
     };
 
     function setupUnit(unit) {
+        console.log("Setting up unit:", unit);
         currentUnit = unit;
         currentCollection = `inventory_${unit.toLowerCase()}`;
         initialData = unit === 'A1' ? inventoryA1 : inventoryB2;
         sessionStorage.setItem('selectedUnit', unit);
 
         if (appTitle) appTitle.textContent = `INVENTARIO ${unit}`;
-        if (unitSelectionContainer) unitSelectionContainer.style.display = 'none';
-        if (appContainer) appContainer.style.display = 'block';
+        if (unitSelectionContainer) unitSelectionContainer.style.setProperty('display', 'none', 'important');
+        if (appContainer) appContainer.style.setProperty('display', 'block', 'important');
         
         startRealtimeListener();
     }
