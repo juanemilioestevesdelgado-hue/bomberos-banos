@@ -1186,10 +1186,10 @@ document.addEventListener('DOMContentLoaded', async () => {
                 div.appendChild(actionsDiv);
             }
 
-            if (aiMessages.style.maxHeight === '0px' || !aiMessages.style.maxHeight) {
-                aiMessages.style.padding = '1.5rem';
-                aiMessages.style.maxHeight = '500px';
-                aiMessages.style.overflowY = 'auto';
+            if (aiMessages.style.display === 'none' || !aiMessages.style.display) {
+                aiMessages.style.display = 'flex';
+                const toggleChatBtn = document.getElementById('toggle-chat-btn');
+                if (toggleChatBtn) toggleChatBtn.textContent = 'Ocultar Chat';
             }
             aiMessages.appendChild(div);
             aiMessages.scrollTop = aiMessages.scrollHeight;
@@ -1680,6 +1680,21 @@ INSTRUCCIONES ABSOLUTAS:
         aiInput.addEventListener('keypress', (e) => {
             if (e.key === 'Enter') sendAi.click();
         });
+
+        // Toggle chat button
+        const toggleChatBtn = document.getElementById('toggle-chat-btn');
+        if (toggleChatBtn) {
+            toggleChatBtn.addEventListener('click', () => {
+                const messagesDiv = document.getElementById('ai-messages');
+                if (messagesDiv.style.display === 'none') {
+                    messagesDiv.style.display = 'flex';
+                    toggleChatBtn.textContent = 'Ocultar Chat';
+                } else {
+                    messagesDiv.style.display = 'none';
+                    toggleChatBtn.textContent = 'Ver Chat';
+                }
+            });
+        }
     }
 
     checkSession(); // Added to trigger auth check on load
