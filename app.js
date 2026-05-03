@@ -14,15 +14,15 @@ import {
     arrayRemove
 } from "firebase/firestore";
 
-// Firebase configuration for 5ta Brigada
+// Firebase configuration for Bomberos-baños
 const firebaseConfig = {
-    apiKey: "AIzaSyBpGkDT1Fz-XqY_H7clwtHYiwyeCsWvrQk",
-    authDomain: "inventario-5ta-brigada.firebaseapp.com",
-    projectId: "inventario-5ta-brigada",
-    storageBucket: "inventario-5ta-brigada.firebasestorage.app",
-    messagingSenderId: "903523003246",
-    appId: "1:903523003246:web:bd4cbd336d7f01ac46ef7f",
-    measurementId: "G-LFWZTZFGRR"
+  apiKey: "AIzaSyCwx2ipgLDM5pTE9sQPSRBigt6ZsD_tHeo",
+  authDomain: "bomberos-banos.firebaseapp.com",
+  projectId: "bomberos-banos",
+  storageBucket: "bomberos-banos.firebasestorage.app",
+  messagingSenderId: "385990398961",
+  appId: "1:385990398961:web:a64c219d575955f1e9aa50",
+  measurementId: "G-RC28R1048D"
 };
 
 const app = initializeApp(firebaseConfig);
@@ -37,7 +37,7 @@ const db = getFirestore(app);
 const IMGBB_API_KEY = "6f61e5ee8f8afa155a55c439b13602e5";
 
 let reviewedCount = 0;
-let currentUnit = "5ta Brigada";
+let currentUnit = "Bomberos-banos";
 let currentCollection = "inventory";
 
 document.addEventListener('DOMContentLoaded', async () => {
