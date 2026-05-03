@@ -181,5 +181,4 @@ export const inventoryB2 = [
     { codigo: "B2-107", sicafi: "", pf: "", descripcion: "Mangueras 2 1/2 ataque rápido y Piton El Khart Brass (3)", ubicacion: "ESTIBADOS", marca: "El Khart Brass", modelo: "", serie: "" },
     { codigo: "B2-108", sicafi: "", pf: "", descripcion: "Mangueras 2 1/2 25 asas (7)", ubicacion: "ESTIBADOS", marca: "", modelo: "", serie: "" },
     { codigo: "B2-109", sicafi: "", pf: "", descripcion: "Camilla FEEL", ubicacion: "ESTIBADOS", marca: "", modelo: "", serie: "" }
-];
-];
+]

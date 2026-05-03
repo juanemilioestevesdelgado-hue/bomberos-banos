@@ -868,7 +868,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         syncBtn.disabled = true;
         try {
             const batch = writeBatch(db);
-            fullInventory.forEach((item) => {
+            initialData.forEach((item) => {
                 const docRef = doc(db, currentCollection, item.codigo);
                 batch.set(docRef, {
                     codigo: item.codigo, sicafi: item.sicafi, pf: item.pf,
